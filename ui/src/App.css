@@ -1,0 +1,25 @@
+#root{
+    background-color: #212121;
+}
+
+.custom-btn-outline-primary {
+    border:2px solid #A73911;
+    color: #FFFFFF;
+}
+.custom-btn-outline-primary:hover{
+    background-color: #A73911;
+    color: #FFFFFF;
+}
+
+
+
+.ellipse {
+    background-color: #a82f02;
+    border-radius: 86.5px;
+    height: 173px;
+    left: 95%;
+    position: fixed;
+    top: 0;
+    width: 173px;
+
+}

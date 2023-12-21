@@ -1,0 +1,16 @@
+@media screen and (max-width: 1000px) {
+    .desktop{
+        display: none;
+    }
+    .mobile{
+        display: flex;
+    }
+}
+@media screen and (min-width: 1000px) {
+    .desktop{
+        display: flex;
+    }
+    .mobile{
+        display: none;
+    }
+}
