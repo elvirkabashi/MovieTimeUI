@@ -1,8 +1,23 @@
+/* eslint-disable no-unused-vars */
+import '../OnBoardPages/assets/css/style.css'
+import HeroSection from './HeroSection'
+import MainSection from './MainSection'
+
+
 
 function OnBoard() {
   return (
-    <div>OnBoard</div>
+  <div>
+  <HeroSection/>
+     <MainSection/>
+  </div>
+   
+   
+    
+
   )
 }
+
+
 
 export default OnBoard
