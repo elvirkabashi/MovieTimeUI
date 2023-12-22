@@ -8,13 +8,13 @@ function HeroSection(){
         <Logo/>
 
         <div className='buttons'>
-          <button className='loginButton'>
+          <a href="/login"><button className='loginButton'>
             Log in
-          </button>
+          </button></a>
 
-          <button className='signUpButton'>
+          <a href="/signup"><button className='signUpButton'>
             Sign up
-          </button>
+          </button></a>
         </div>
       </div>
 

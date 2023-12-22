@@ -1,5 +1,6 @@
 import Ellipse from '../../components/Ellipse'
 import Footer from '../../components/Footer'
+import Logo from '../../components/Logo'
 import './assets/css/style.css'
 function LogIn() {
 
@@ -7,8 +8,8 @@ function LogIn() {
     <>
         <div className='container' style={{backgroundColor: '#212121'}}>
 
-            <nav>
-                <img src={'logo.png'} alt="Logo" />
+            <nav className='py-3'>
+                <Logo/>
             </nav>
              <Ellipse top={100}/>
             <div className="desktop d-lg-flex justify-content-center align-items-center " style={{height: '100vh'}}>
