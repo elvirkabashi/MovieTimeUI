@@ -5,7 +5,7 @@ import logoimg from '../pages/OnBoardPages/assets/img/logo.png'
 function Logo(){
 return(
     <div>
-        <img className='logoimg' src={logoimg} alt='logo'></img>
+        <a href='/'><img className='logoimg' src={logoimg} alt='logo'></img></a>
     </div>
 )
 }

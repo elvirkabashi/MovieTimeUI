@@ -158,3 +158,24 @@ margin-right: 120px;
   background-color:#A82F02; /* Adjust the color and opacity of the square */
   z-index: 1 ; 
 }
+
+a{
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .desktop{
+        display: none;
+    }
+    .mobile{
+        display: flex;
+    }
+}
+@media screen and (min-width: 1000px) {
+    .desktop{
+        display: flex;
+    }
+    .mobile{
+        display: none;
+    }
+}
