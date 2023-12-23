@@ -1,5 +1,4 @@
 import Ellipse from '../../components/Ellipse'
-import Footer from '../../components/Footer'
 import Logo from '../../components/Logo'
 import './assets/css/style.css'
 function LogIn() {
@@ -78,7 +77,6 @@ function LogIn() {
        </div>
             
         </div>
-        <Footer/>
     </>
   )
 }
