@@ -52,7 +52,7 @@ Get Notifications
             </div>
             <div className='movieContainer'>
             <img className='moviesimg' src={CTEimg}></img>
-            <div className="overlay-square"></div>
+          
 
 </div>
          
