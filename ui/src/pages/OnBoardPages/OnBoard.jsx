@@ -11,7 +11,6 @@ function OnBoard() {
   <div>
       <HeroSection/>
      <MainSection/>
-     <Footer/>
   </div>
    
    

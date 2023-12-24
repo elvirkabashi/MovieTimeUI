@@ -1,5 +1,4 @@
 import Ellipse from '../../components/Ellipse'
-import Footer from '../../components/Footer'
 import Logo from '../../components/Logo'
 import './assets/css/style.css'
 function SingUp() {
@@ -87,7 +86,6 @@ function SingUp() {
        </div>
             
         </div>
-        <Footer/>
     </>
   )
 }
