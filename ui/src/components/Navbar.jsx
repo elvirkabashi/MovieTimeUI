@@ -27,8 +27,8 @@ function Navbar({ updateMainMargin }) {
           <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>
             &times;
           </a>
-          <a  href="/">About</a>
-          <a href="/">Services</a>
+          <a  href="/">Home</a>
+          <a href="/watchlist">Watchlist</a>
           <a href="/">Clients</a>
           <a href="/">Contact</a>
         </div>

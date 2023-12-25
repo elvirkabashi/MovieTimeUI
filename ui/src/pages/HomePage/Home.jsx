@@ -31,14 +31,11 @@ function Home() {
 
   return (
     <>
-      <div className="container d-flex flex-wrap gap-3">
+      <div className="container d-flex flex-wrap gap-3 py-5">
         {movies && movies.map(movie => (
           <MovieCard key={movie.movieId}
-            title={movie.title}
-            description={movie.description}
-            publishedYear={movie.publishedYear}
-            genre={movie.genre}
-            actors={movie.actors} />
+            movieId={movie.movieId}
+            title={movie.title} />
         ))}
       </div>
     </>

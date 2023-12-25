@@ -7,6 +7,8 @@ import Home from './pages/HomePage/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { useState } from 'react';
+import MovieDetails from './components/MovieDetails';
+import Watchlist from './pages/WatchlistPage/Watchlist';
 
 function App() {
 
@@ -31,6 +33,8 @@ function App() {
           <div id="main" style={{marginLeft: mainMargin}}>
           <Routes>
             <Route path='/' element={<Home/>}></Route>
+            <Route path='/movie/id/:id' element={<MovieDetails/>}></Route>
+            <Route path='/watchlist' element={<Watchlist/>}></Route>
           </Routes>
           </div>
           </>
