@@ -3,9 +3,14 @@ import noimage from '../assets/img/no-image.jpg'
 import PropTypes from 'prop-types'; 
 import axios from 'axios';
 
+
 function MovieCard({wlistId,movieId,title}) {
 
-  const [del,setDel] = useState(false)
+  const [del,setDel] = useState(false);
+  const[isFavorite,setIsFavorite]=useState(true);
+
+
+
 
   useEffect(()=>{
     const currentUrl = window.location.href;
@@ -47,13 +52,40 @@ function MovieCard({wlistId,movieId,title}) {
     }
   };
 
+  const handleFavorite = async () => {
+    try {
+      const response = await axios.post('https://localhost:7147/api/Favorites', {
+        movieId: movieId,
+        // Add any additional data related to the favorite, if needed
+      });
+
+      if (response.status === 200) {
+        setIsFavorite(!isFavorite);
+      } else {
+        console.error('Failed to mark/unmark movie as favorite');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <div className="card" style={{ width: '18rem' }}>
       {del && 
         <button type="button" className="btn-close btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left"
         title="Delete" aria-label="Close" style={{ position: 'absolute', top: 5, right: 5 }}
         onClick={handleDelete}></button>
+      
       }
+       <span
+        className={`favorite-icon ${isFavorite ? 'favorited' : ''}`}
+        onClick={handleFavorite}
+        style={{ cursor: 'pointer' }}
+      >
+        {isFavorite ? '❤️' : '🤍'}
+      </span>
+
+    
     
 
     <img src={noimage} className="card-img-top" alt="Movie Poster" />

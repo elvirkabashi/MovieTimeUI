@@ -57,7 +57,7 @@ function MovieDetails() {
 
     const closeAlerts = () => {
         setShowSuccessAlert(false);
-        setShowWarningAlert(false);
+        setShowWarningAlert(false); 
       };
 
   return (

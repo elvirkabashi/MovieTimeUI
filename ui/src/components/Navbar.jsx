@@ -29,6 +29,7 @@ function Navbar({ updateMainMargin }) {
           </a>
           <a  href="/">Home</a>
           <a href="/watchlist">Watchlist</a>
+          <a href="/favorite">Favorites</a>
           <a href="/">Clients</a>
           <a href="/">Contact</a>
         </div>

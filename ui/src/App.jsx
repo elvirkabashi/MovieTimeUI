@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import { useState } from 'react';
 import MovieDetails from './components/MovieDetails';
 import Watchlist from './pages/WatchlistPage/Watchlist';
+import Favorite from './pages/FavoritePage/Favorite';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
             <Route path='/' element={<Home/>}></Route>
             <Route path='/movie/id/:id' element={<MovieDetails/>}></Route>
             <Route path='/watchlist' element={<Watchlist/>}></Route>
+            <Route path='/favorite' element={<Favorite/>}></Route>
           </Routes>
           </div>
           </>
