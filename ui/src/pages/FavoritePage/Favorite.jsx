@@ -37,7 +37,7 @@ function Favorite (){
     }
     return(
         <div>
-        <h2>Favorite Movies</h2>
+        <h2 className=" favoriteHeader ">Favorite Movies</h2>
         <div className="row">
           {favoriteMovies.map((movie) => (
             <div key={movie.movieId} className="col-md-3">

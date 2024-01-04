@@ -7,7 +7,7 @@ import axios from 'axios';
 function MovieCard({wlistId,movieId,title}) {
 
   const [del,setDel] = useState(false);
-  const[isFavorite,setIsFavorite]=useState(true);
+  const[isFavorite,setIsFavorite]=useState(false);
 
 
 
@@ -77,14 +77,7 @@ function MovieCard({wlistId,movieId,title}) {
         onClick={handleDelete}></button>
       
       }
-       <span
-        className={`favorite-icon ${isFavorite ? 'favorited' : ''}`}
-        onClick={handleFavorite}
-        style={{ cursor: 'pointer' }}
-      >
-        {isFavorite ? '❤️' : '🤍'}
-      </span>
-
+  
     
     
 
@@ -94,6 +87,14 @@ function MovieCard({wlistId,movieId,title}) {
       <a href={`/movie/id/${movieId}`} className="btn btn-outline-primary">
         Details
       </a>
+      <span
+        className= {` favorite-icon ${isFavorite ? 'favorited' : ''}`}
+        onClick={handleFavorite}
+        style={{ cursor: 'pointer' }}
+      >
+        {isFavorite ? '❤️' : '🤍'}
+      </span>
+
     </div>
   </div>
   )

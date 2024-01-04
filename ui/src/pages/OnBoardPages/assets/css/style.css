@@ -179,3 +179,36 @@ a{
         display: none;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.row{
+  display: flex;
+  justify-content: center;
+  margin: 120px;
+}
+.favoriteHeader{
+  color: white;
+  text-align: center;
+  margin-top: 32px;
+}
+.favorite-icon{
+padding: 15px;
+
+
+}
