@@ -8,8 +8,9 @@ function MovieCard({wlistId,movieId,title}) {
 
   const [del,setDel] = useState(false);
   const[isFavorite,setIsFavorite]=useState(false);
+  
 
-
+  const isOnFavoritesPage = window.location.href.includes('/favorite');
 
 
   useEffect(()=>{
@@ -59,15 +60,39 @@ function MovieCard({wlistId,movieId,title}) {
         // Add any additional data related to the favorite, if needed
       });
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status<300) {
         setIsFavorite(!isFavorite);
+        setSuccessMessage('Added to Favorites')
+       
+     
       } else {
-        console.error('Failed to mark/unmark movie as favorite');
+        console.error('Failed to toggle movie as favorite. Response:', response);
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  const handleDeleteFavorite = async () => {
+    const confirmed = window.confirm(`Are you sure you want to delete ${title}?`);
+
+    if (confirmed) {
+    try {
+      const response = await axios.delete(`https://localhost:7147/api/Favorites/${movieId}`);
+  
+      if (response.status === 200) {
+        console.log('Movie removed from favorites successfully');
+        setIsFavorite(false); // Assuming you also want to update local state
+      } else {
+        console.error('Failed to remove movie from favorites');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  };
+  
+
+
 
   return (
     <div className="card" style={{ width: '18rem' }}>
@@ -77,6 +102,18 @@ function MovieCard({wlistId,movieId,title}) {
         onClick={handleDelete}></button>
       
       }
+      
+   <button
+  type="button"
+  className="btn-close btn btn-secondary"
+  data-bs-toggle="tooltip"
+  data-bs-placement="left"
+  title="Remove from Favorites"
+  aria-label="Close"
+  style={{ position: 'absolute', top: 5, right: 5 }}
+  onClick={() => handleDeleteFavorite(movieId)}
+></button>
+
   
     
     
@@ -87,19 +124,35 @@ function MovieCard({wlistId,movieId,title}) {
       <a href={`/movie/id/${movieId}`} className="btn btn-outline-primary">
         Details
       </a>
-      <span
-        className= {` favorite-icon ${isFavorite ? 'favorited' : ''}`}
-        onClick={handleFavorite}
-        style={{ cursor: 'pointer' }}
-      >
-        {isFavorite ? '❤️' : '🤍'}
-      </span>
 
+  
+   
+      {isOnFavoritesPage ? (
+          <button
+            type="button"
+            className="btn-close btn btn-secondary"
+            data-bs-toggle="tooltip"
+            data-bs-placement="left"
+            title="Remove from Favorites"
+            aria-label="Close"
+            style={{ position: 'absolute', top: 5, right: 5 }}
+            onClick={handleDeleteFavorite}
+          ></button>
+        ) : (
+          <button
+            className={`btn btn-outline-danger`}
+            onClick={handleFavorite}
+          >
+            Add to Favorites
+          </button>
+        )}
+
+      
     </div>
   </div>
   )
 }
-
+  
 MovieCard.propTypes = {
     wlistId : PropTypes.number.isRequired,
     movieId : PropTypes.number.isRequired,

@@ -28,6 +28,10 @@ function Favorite (){
     
         fetchFavoriteMovies();
       }, []);
+
+    
+      
+      
     if (loading) {
         return <LoadingSpinner/>;
     }
@@ -35,26 +39,37 @@ function Favorite (){
     if (error) {
         return <h3 className="text-danger text-center">{error}</h3>;
     }
-    return(
-        <div>
-        <h2 className=" favoriteHeader ">Favorite Movies</h2>
-        <div className="row">
-          {favoriteMovies.map((movie) => (
-            <div key={movie.movieId} className="col-md-3">
-              <MovieCard
-                wlistId={movie.wlistId}
-                movieId={movie.movieId}
-                title={movie.title}
-                description={movie.description}
-                publishedYear={movie.publishedYear}
-                genre={movie.genre}
-                actors={movie.actors}
-              />
-            </div>
-          ))}
-        </div>
+    return (
+      <div>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <h2 className="favoriteHeader">Favorite Movies</h2>
+            {favoriteMovies.length === 0 ? (
+              <p className="text-center">No favorite movies yet.</p>
+            ) : (
+              <div className="row">
+                {favoriteMovies.map((movie) => (
+                  <div key={movie.movieId} className="col-md-3">
+                    <MovieCard
+                      wlistId={movie.wlistId}
+                      movieId={movie.movieId}
+                      title={movie.title}
+                      description={movie.description}
+                      publishedYear={movie.publishedYear}
+                      genre={movie.genre}
+                      actors={movie.actors}
+                  
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
-    )
-}
+    );
+                }    
 
 export default Favorite
