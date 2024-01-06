@@ -1,7 +1,34 @@
+import { useState } from 'react';
 import Ellipse from '../../components/Ellipse'
 import Logo from '../../components/Logo'
+import axios from 'axios';
 import './assets/css/style.css'
 function LogIn() {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleLogin = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await axios.post('http://localhost:7010/api/authorization/Login', {
+          Username: username,
+          Password: password,
+        });
+  
+        // Assuming the API returns a token
+        const token = response.data.token;
+  
+        // Store the token in your application state or localStorage for future use
+        console.log('Token:', token);
+  
+        // Redirect or perform any other action upon successful login
+      } catch (error) {
+        // Handle unsuccessful login (e.g., display an error message)
+        console.error('Login failed', error);
+      }
+    };
 
   return (
     <>
@@ -15,20 +42,35 @@ function LogIn() {
            
                 <div className='me-5 p-5' style={{borderRight: '2px solid #a63910',width:'35%'}}>
                     <p className='text-white py-2 fs-4'>Log in to your account</p>
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <div className="">
-                            <label className="form-label text-white">Email address</label>
-                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Your email'/>
+                        <label className="form-label text-white">Username</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder='Your Username'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
                         </div>
                         <div className="">
-                            <label className="form-label text-white">Password</label>
-                            <input type="password" className="form-control " id="exampleInputPassword1" placeholder="Password"/>
+                        <label className="form-label text-white">Password</label>
+                        <input
+                            type="password"
+                            className="form-control "
+                            id="exampleInputPassword1"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                         </div>
                         <div className="mb-3 form-check">
-                            <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                            <label className="form-check-label text-white">Remember me</label>
+                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                        <label className="form-check-label text-white">Remember me</label>
                         </div>
-                        <button type="submit" className="btn custom-btn-outline-primary">LogIn</button>
+                        <button type="submit" className="btn custom-btn-outline-primary">
+                        LogIn
+                        </button>
                     </form>
                 </div>
 

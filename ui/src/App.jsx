@@ -22,30 +22,30 @@ function App() {
 
   return (
     <BrowserRouter>
-    {!isAuthenticated ? 
-          <Routes> 
-            <Route path="/" element={<OnBoard />}></Route>
-            <Route path="/login" element={<LogIn />}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
-          </Routes>
-          :
-          <>
-          <Navbar updateMainMargin={updateMainMargin} />
-          <div id="main" style={{marginLeft: mainMargin}}>
-          <Routes>
-            <Route path='/' element={<Home/>}></Route>
-            <Route path='/movie/id/:id' element={<MovieDetails/>}></Route>
-            <Route path='/watchlist' element={<Watchlist/>}></Route>
-            <Route path='/favorite' element={<Favorite/>}></Route>
-          </Routes>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            {!isAuthenticated ? (
+              <Routes>
+                <Route path="/" element={<OnBoard />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/signup" element={<SignUp />} />
+              </Routes>
+            ) : (
+              <>
+                <Navbar updateMainMargin={updateMainMargin} />
+                <div id="main" style={{ marginLeft: mainMargin, flexGrow: 1 }}>
+                  <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/movie/id/:id' element={<MovieDetails />} />
+                    <Route path='/watchlist' element={<Watchlist />} />
+                    <Route path='/favorite' element={<Favorite />} />
+                  </Routes>
+                </div>
+              </>
+            )}
+            <Footer />
           </div>
-          </>
-
-    }
-    
-    <Footer/>
     </BrowserRouter>
-   
+    
   )
 }
 

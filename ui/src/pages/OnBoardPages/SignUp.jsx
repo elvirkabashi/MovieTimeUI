@@ -1,7 +1,40 @@
+import { useState } from 'react';
 import Ellipse from '../../components/Ellipse'
+import axios from 'axios';
 import Logo from '../../components/Logo'
 import './assets/css/style.css'
 function SingUp() {
+
+    const [formData, setFormData] = useState({
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+      });
+    
+      const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+      };
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+        const jsonData = {
+          Name: formData.name,
+          Username: formData.username,
+          Email: formData.email,
+          Password: formData.password
+        };
+      
+        
+            const response = await axios.post('http://localhost:7010/api/authorization/Registration', jsonData);
+            console.log('Response:', response.data);
+            // Add logic based on the response if needed
+         
+      };
 
   return (
     <>
@@ -15,23 +48,52 @@ function SingUp() {
            
            <div className='me-5 p-5' style={{borderRight: '2px solid #a63910',width:'35%'}}>
                <p className='text-white text-center py-2 fs-4'>Sign Up</p>
-               <form>
+               <form onSubmit={handleSubmit}>
                     <div className="">
                         <label className="form-label text-white">Name</label>
-                        <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Your name'/>
+                        <input
+                            type='text'
+                            className='form-control'
+                            name='name'
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder='Your name'
+                        />
+                    </div>
+                    <div className="">
+                        <label className="form-label text-white">Username</label>
+                        <input
+                            type='text'
+                            className='form-control'
+                            name='username'
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder='Username'
+                        />
                     </div>
                     <div className="">
                         <label className="form-label text-white">Email address</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Your email'/>
-                    </div>
-                    <div className="">
-                        <label className="form-label text-white">Password</label>
-                        <input type="password" className="form-control " id="exampleInputPassword1" placeholder="Password"/>
-                    </div>
+                        <input
+                            type='email'
+                            className='form-control'
+                            name='email'
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder='Your email'
+                        />
+                       </div>
                     <div className="mb-3">
-                        <label className="form-label text-white">Confitm Password</label>
-                        <input type="password" className="form-control " id="exampleInputPassword1" placeholder="Confirm Password"/>
-                    </div>
+                        <label className="form-label text-white">Password</label>
+                        <input
+                            type='password'
+                            className='form-control '
+                            name='password'
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder='Password'
+                        />
+                       </div>
+                   
 
                    <button type="submit" className="btn custom-btn-outline-primary">Sign Up</button>
                </form>

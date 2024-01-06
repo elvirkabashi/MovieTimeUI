@@ -27,7 +27,7 @@ function Favorite (){
         };
     
         fetchFavoriteMovies();
-      }, []);
+      }, [favoriteMovies]);
 
     
       
@@ -51,16 +51,11 @@ function Favorite (){
             ) : (
               <div className="row">
                 {favoriteMovies.map((movie) => (
-                  <div key={movie.movieId} className="col-md-3">
+                  <div key={movie.favoriteId} className="col-md-3">
                     <MovieCard
-                      wlistId={movie.wlistId}
+                      favoriteId={movie.favoriteId}
                       movieId={movie.movieId}
-                      title={movie.title}
-                      description={movie.description}
-                      publishedYear={movie.publishedYear}
-                      genre={movie.genre}
-                      actors={movie.actors}
-                  
+                      title={movie.title} 
                     />
                   </div>
                 ))}

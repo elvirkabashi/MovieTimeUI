@@ -4,25 +4,28 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 
-function MovieCard({wlistId,movieId,title}) {
+function MovieCard({favoriteId,wlistId,movieId,title}) {
 
-  const [del,setDel] = useState(false);
-  const[isFavorite,setIsFavorite]=useState(false);
+  const [wtachListButton,setWtachListButton] = useState(false);
+
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+  const [isInFavorites, setIsInFavorites] = useState(false);
   
-
-  const isOnFavoritesPage = window.location.href.includes('/favorite');
-
 
   useEffect(()=>{
     const currentUrl = window.location.href;
     if(currentUrl.split("/")[3] === 'watchlist'){
-      setDel(true) 
+      setWtachListButton(true) 
     }
+
 
     const tooltipElement = document.querySelector('[data-bs-toggle="tooltip"]');
     if (tooltipElement) {
       new window.bootstrap.Tooltip(tooltipElement);
     }
+
+    checkIfInFavorites();
 
     return () => {
       const tooltipInstance = window.bootstrap.Tooltip.getInstance(tooltipElement);
@@ -30,9 +33,22 @@ function MovieCard({wlistId,movieId,title}) {
         tooltipInstance.dispose();
       }
     };
-  },[])
+  },[isInFavorites])
 
-  const handleDelete = async () => {
+
+  const checkIfInFavorites = async () => {
+    try {
+      const favoritesResponse = await axios.get('https://localhost:7147/api/Favorites');
+      const currentFavorite = favoritesResponse.data;
+
+      const isInFavorites = currentFavorite.some(item => item.movieId === movieId);
+      setIsInFavorites(isInFavorites);
+    } catch (error) {
+      console.error('Error checking if in Favorites:', error);
+    }
+  };
+
+  const handleDeleteWatchlist = async () => {
     const confirmed = window.confirm(`Are you sure you want to delete ${title}?`);
 
     if (confirmed) {
@@ -41,10 +57,8 @@ function MovieCard({wlistId,movieId,title}) {
         const response = await axios.delete(`https://localhost:7147/api/Watchlists/${wlistId}`);
 
         if (response.status === 200) {
-          // Handle successful deletion (e.g., show a success message)
           console.log('Movie deleted successfully');
         } else {
-          // Handle deletion failure (e.g., show an error message)
           console.error('Failed to delete movie');
         }
       } catch (error) {
@@ -55,40 +69,34 @@ function MovieCard({wlistId,movieId,title}) {
 
   const handleFavorite = async () => {
     try {
-      const response = await axios.post('https://localhost:7147/api/Favorites', {
-        movieId: movieId,
-        // Add any additional data related to the favorite, if needed
-      });
+      const favoritesResponse = await axios.get('https://localhost:7147/api/Favorites');
+      const currentFavorite = favoritesResponse.data;
 
-      if (response.status >= 200 && response.status<300) {
-        setIsFavorite(!isFavorite);
-        setSuccessMessage('Added to Favorites')
-       
-     
+      if (currentFavorite.some(item => item.movieId === movieId)) {
+        alert("This is already in your favorite list");
       } else {
-        console.error('Failed to toggle movie as favorite. Response:', response);
+        await axios.post('https://localhost:7147/api/Favorites', {
+          movieId: movieId,
+        });
+
+        setShowSuccessAlert(true);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error adding to Favorites:', error);
     }
   };
-  const handleDeleteFavorite = async () => {
-    const confirmed = window.confirm(`Are you sure you want to delete ${title}?`);
 
-    if (confirmed) {
+
+  const handleDeleteFavorite = async () => {
+
     try {
-      const response = await axios.delete(`https://localhost:7147/api/Favorites/${movieId}`);
+      await axios.delete(`https://localhost:7147/api/Favorites/${favoriteId}`);
   
-      if (response.status === 200) {
-        console.log('Movie removed from favorites successfully');
-        setIsFavorite(false); // Assuming you also want to update local state
-      } else {
-        console.error('Failed to remove movie from favorites');
-      }
+    
     } catch (error) {
       console.error('Error:', error);
     }
-  }
+
   };
   
 
@@ -96,56 +104,38 @@ function MovieCard({wlistId,movieId,title}) {
 
   return (
     <div className="card" style={{ width: '18rem' }}>
-      {del && 
+      {wtachListButton && 
         <button type="button" className="btn-close btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left"
         title="Delete" aria-label="Close" style={{ position: 'absolute', top: 5, right: 5 }}
-        onClick={handleDelete}></button>
-      
+        onClick={handleDeleteWatchlist}></button>
       }
       
-   <button
-  type="button"
-  className="btn-close btn btn-secondary"
-  data-bs-toggle="tooltip"
-  data-bs-placement="left"
-  title="Remove from Favorites"
-  aria-label="Close"
-  style={{ position: 'absolute', top: 5, right: 5 }}
-  onClick={() => handleDeleteFavorite(movieId)}
-></button>
-
-  
-    
-    
 
     <img src={noimage} className="card-img-top" alt="Movie Poster" />
     <div className="card-body">
+      {showSuccessAlert && (
+        <p className=" fade show" role="alert" style={{ maxWidth: '300px' }}>
+          Successfully added to Favorites.
+        </p>
+      )}
       <h5 className="card-title">{title}</h5>
+      <div className='d-flex justify-content-between'>
       <a href={`/movie/id/${movieId}`} className="btn btn-outline-primary">
         Details
       </a>
 
-  
-   
-      {isOnFavoritesPage ? (
-          <button
-            type="button"
-            className="btn-close btn btn-secondary"
-            data-bs-toggle="tooltip"
-            data-bs-placement="left"
-            title="Remove from Favorites"
-            aria-label="Close"
-            style={{ position: 'absolute', top: 5, right: 5 }}
-            onClick={handleDeleteFavorite}
-          ></button>
+      {isInFavorites ? (
+          <button className='btn' onClick={() => (isInFavorites ? handleDeleteFavorite(favoriteId) : handleFavorite)}>
+            
+            <i className="bi bi-heart-fill text-danger"></i>
+          </button>
         ) : (
-          <button
-            className={`btn btn-outline-danger`}
-            onClick={handleFavorite}
-          >
-            Add to Favorites
+          <button className='btn' onClick={handleFavorite}>
+            <i className="bi bi-heart"></i>
+            
           </button>
         )}
+      </div>
 
       
     </div>
@@ -155,11 +145,12 @@ function MovieCard({wlistId,movieId,title}) {
   
 MovieCard.propTypes = {
     wlistId : PropTypes.number.isRequired,
+    favoriteId : PropTypes.number.isRequired,
     movieId : PropTypes.number.isRequired,
     title : PropTypes.string.isRequired,
-    description : PropTypes.string.isRequired,
-    publishedYear : PropTypes.number.isRequired,
-    genre : PropTypes.string.isRequired,
+    description : PropTypes.string,
+    publishedYear : PropTypes.number,
+    genre : PropTypes.string,
     actors : PropTypes.arrayOf(PropTypes.string)
 }
 
