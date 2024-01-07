@@ -4,6 +4,7 @@ import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
 
 import noimage from '../assets/img/no-image.jpg'
+import RatingForm from './RatingForm';
 
 function MovieDetails() {
 
@@ -141,6 +142,9 @@ function MovieDetails() {
             <hr/>
             <p>Actors: {movie.actors.map(a => <div className="d-flex flex-row" key={a}><b>{a}</b></div>)}</p>
         </div>
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+        <RatingForm movieId={id} />
+      </div>
     </div>
   )
 }
