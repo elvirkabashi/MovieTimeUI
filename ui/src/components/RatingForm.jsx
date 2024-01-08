@@ -1,65 +1,110 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { FaStar } from "react-icons/fa";
 
-const RatingForm = ({ movieId }) => {
-  const [userRating, setUserRating] = useState(0);
+const colors = {
+  orange: "#FFBA5A",
+  grey: "#a9a9a9"
+};
+
+const RatingForm = ({ movieId ,onSubmit }) => {
+  const [currentValue, setCurrentValue] = useState(0);
+  const [hoverValue, setHoverValue] = useState(undefined);
   const [comment, setComment] = useState('');
 
-  const handleRatingChange = (e) => {
-    setUserRating(parseFloat(e.target.value));
+  const stars = Array(5).fill(0);
+
+  const handleClick = (value) => {
+    setCurrentValue(value);
   };
-  const handleSubmitRating = async () => {
+
+  const handleMouseOver = (newHoverValue) => {
+    setHoverValue(newHoverValue);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverValue(undefined);
+  };
+
+  const handleSubmit = async () => {
+    // Prepare the data to be sent
+    const ratingData = {
+      MovieId: movieId,
+      Rate: currentValue,
+      Comment: comment,
+    };
+
     try {
-
-      if (userRating === 0) {
-        console.error('Rating cannot be zero.');
-        return;
-      }
-  
-
-      if (!comment.trim()) {
-        console.error('Comment cannot be empty.');
-        return;
-      }
-  
-      const ratingData = {
-        movieId: parseInt(movieId),
-        rate: userRating,
-        comment: comment,
-      };
-  
-      const response = await axios.post('https://localhost:7147/api/ratings', ratingData);
-  
-      console.log('Rating submitted successfully:', response.data);
-  
-      setUserRating(0);
-      setComment('');
+      await axios.post('https://localhost:7147/api/ratings', ratingData);
+      onSubmit();
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      // Handle errors
+      console.error('Error submitting rating', error);
     }
   };
-  
+
   return (
-    <div className="rating-form">
-      <h2>Rate this movie</h2>
-      <select value={userRating} onChange={handleRatingChange}>
-        <option value="0">Select Rating</option>
-        {[1, 2, 3, 4, 5].map((rating) => (
-          <option key={rating} value={rating}>
-            {rating}
-          </option>
+    <div style={styles.container}>
+      <div style={styles.stars}>
+        {stars.map((_, index) => (
+          <FaStar
+            key={index}
+            size={24}
+            onClick={() => handleClick(index + 1)}
+            onMouseOver={() => handleMouseOver(index + 1)}
+            onMouseLeave={handleMouseLeave}
+            color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
+            style={{
+              marginRight: 10,
+              cursor: "pointer"
+            }}
+          />
         ))}
-      </select>
+      </div>
       <textarea
-        placeholder="Add a comment"
+        placeholder="What's your experience? (max char 50!)"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
+        maxLength={50}
+        style={styles.textarea}
       />
-      <button className="btn btn-primary" onClick={handleSubmitRating}>
-        Submit Rating
+
+      <button style={styles.button} onClick={handleSubmit}>
+        Submit
       </button>
     </div>
   );
+};
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  stars: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  textarea: {
+    border: "1px solid #a9a9a9",
+    borderRadius: 5,
+    padding: 10,
+    margin: "20px 0",
+    minHeight: 100,
+    width: 300
+  },
+  button: {
+    border: "1px solid #a9a9a9",
+    borderRadius: 5,
+    width: 300,
+    padding: 10,
+  }
+};
+
+RatingForm.propTypes = {
+  movieId: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func
 };
 
 export default RatingForm;

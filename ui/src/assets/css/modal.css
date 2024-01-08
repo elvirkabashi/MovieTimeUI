@@ -1,0 +1,48 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-dialog {
+    position: relative;
+    z-index: 1001;
+  }
+
+  .cm {
+    max-height: 400px;
+    overflow-y: scroll;
+    padding: 10px; /* Increased padding for a nicer look */
+    background-color: #424242;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.2); /* Improved box shadow for a more elegant effect */
+    border-radius: 10px; /* Increased border-radius for rounded corners */
+  }
+  .cm::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+  
+  .cm::-webkit-scrollbar-thumb {
+    background-color: #888; /* Set the color of the thumb (scroll handle) */
+    border-radius: 6px; /* Set the border radius of the thumb */
+    height: 40px; /* Set the height of the thumb */
+  }
+  
+  .cm::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Set the color of the thumb on hover */
+  }
+  
+  .cm::-webkit-scrollbar-track {
+    background-color: #eee; /* Set the color of the track (the area behind the thumb) */
+    border-radius: 6px; /* Set the border radius of the track */
+  }
+  
+  .cm::-webkit-scrollbar-track:hover {
+    background-color: #ddd; /* Set the color of the track on hover */
+  }
