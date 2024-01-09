@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 
-function MovieCard({wlistId,movieId,title}) {
+function MovieCard({wlistId,movieId,title,publishedYear}) {
 
   const [wtachListButton,setWtachListButton] = useState(false);
   
@@ -83,7 +83,7 @@ function MovieCard({wlistId,movieId,title}) {
           <ul className='text-white d-flex gap-1' style={{ listStyleType: 'none', margin: 0, padding: 0 ,fontSize:'12px'}}>
             <li>2h 12m</li>
             <li> • </li>
-            <li>2012</li>
+            <li>{publishedYear}</li>
           </ul>
         </div>
 

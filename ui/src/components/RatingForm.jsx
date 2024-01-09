@@ -63,10 +63,10 @@ const RatingForm = ({ movieId ,onSubmit }) => {
         ))}
       </div>
       <textarea
-        placeholder="What's your experience? (max char 50!)"
+        placeholder="What's your experience? (max char 100!)"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        maxLength={50}
+        maxLength={100}
         style={styles.textarea}
       />
 

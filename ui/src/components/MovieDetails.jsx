@@ -5,6 +5,7 @@ import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/modal.css'
 
 import noimage from '../assets/img/movietime.jpg'
+import noprofile from '../assets/img/noprofilepicture.jpg'
 
 import RatingForm from './RatingForm';
 import RatingDisplay from './RatingDisplay ';
@@ -21,6 +22,7 @@ function MovieDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviews,setReviews] = useState()
     const [avg,setAvg] = useState()
+    const [countComments,setCountComment] = useState()
   
     useEffect(() => {
       axios.get(`https://localhost:7147/api/Movies/${id}`)
@@ -42,6 +44,11 @@ function MovieDetails() {
         axios.get(`https://localhost:7147/api/Ratings/AverageRating/${id}`)
         .then(res=>{
           setAvg(res.data)
+        })
+
+        axios.get(`https://localhost:7147/api/Ratings/CountByMovieId/${id}`)
+        .then(res=>{
+          setCountComment(res.data)
         })
     }, [id,reviews,isModalOpen]);
 
@@ -81,6 +88,15 @@ function MovieDetails() {
         checkIfInFavorites();
     }, [id]);
 
+    useEffect(() => {
+      const hideAlerts = setTimeout(() => {
+        setShowSuccessAlert(false);
+        setShowWarningAlert(false);
+      }, 2000);
+    
+      return () => clearTimeout(hideAlerts);
+    }, [showSuccessAlert, showWarningAlert]);
+
     const addToFavorites = async () => {
       try {
         const favoritesResponse = await axios.get('https://localhost:7147/api/Favorites');
@@ -115,10 +131,7 @@ function MovieDetails() {
       return <h3 className="text-danger text-center">{error}</h3>;
     }
 
-    const closeAlerts = () => {
-        setShowSuccessAlert(false);
-        setShowWarningAlert(false); 
-      };
+    
 
       function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -126,82 +139,132 @@ function MovieDetails() {
       }
 
   return (
-    <div className="text-white container">
+    <div className="text-white">
 
-      <div className='d-flex justify-content-between'>
-      
-        <div className='d-flex flex-column justify-content-center align-items-center'>
+
+      <div className='d-flex py-5'
+        style={{
+          paddingLeft:'120px',
+          width: '100%',
+          height: '450px',
+          background: `
+            linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)) top,
+            linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)) left,
+            linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)) right,
+            url(${noimage}) center/cover no-repeat
+          `,
+        }}>
           
-            
+        {//!Photo section and triler button
+        }
+        <div className='d-flex flex-column align-items-center'>
+          <div style={{ }}>
+            <img src={noimage} alt="" style={{maxWidth:'220px',height:'250px',borderRadius:'10px'}} />
+          </div>
+          <div style={{width:'100%'}}>
+            <button style={{width:'100%',border:'none'}} className='btn'>
+              <i style={{fontSize:'25px'}} className="bi bi-play-circle text-warning px-2"></i>
+              PLAY TRAILER
+              </button>
+          </div>
         </div>
 
-        <div className='d-flex flex-column justify-content-center align-items-center'>
-        {showSuccessAlert && (
-                <div className="alert alert-primary alert-dismissible fade show" role="alert" style={{ maxWidth: '300px' }}>
-                Successfully added to <a href="/watchlist" className="alert-link">watchlist</a>.
-                <button type="button" className="btn-close" onClick={closeAlerts} aria-label="Close"></button>
-                </div>
-            )}
 
-            {showWarningAlert && (
-                <div className="alert alert-warning alert-dismissible fade show d-flex" role="alert" style={{ maxWidth: '600px' }}>
-                <p>Movie is already in the watchlist</p>
-                <a href="/watchlist" className="alert-link ms-2">
-                    Click me to check
-                </a>
-                .
-                <button type="button" className="btn-close" onClick={closeAlerts} aria-label="Close"></button>
-                </div>
-            )}
-              <div className='d-flex'>
-                <h1 className=''>{movie.title} </h1>
+        {//!Title, Rate , Genre and Description section
+        }
+        <div className='ms-5' style={{width:'43%'}}>
+          <div className='d-flex'>
+          <h1 className=''>{movie.title} </h1>
               {isInFavorites ? (
                 <button className='btn' onClick={addToFavorites} style={{border:'none'}}>
-                  <i className="bi bi-heart-fill text-danger" style={{fontSize:'22px'}}></i>
+                    <i className="bi bi-heart-fill text-danger" style={{fontSize:'22px'}}></i>
                 </button>
-                ) : (
+            ) : (
                 <button className='btn' onClick={addToFavorites} style={{border:'none'}}>
-                  <i className="bi bi-heart text-white" style={{fontSize:'20px'}}></i>
+                    <i className="bi bi-heart text-white" style={{fontSize:'20px'}}></i>
                 </button>
               )}
-              </div>
-              <RatingDisplay rate={avg} />
-            <div className='d-flex gap-5 py-2'>
-                <h4>Published Year: {movie.publishedYear}</h4>
-                <button className='btn btn-outline-warning' onClick={addToWatchlist}>Add to Watchlist</button>
-            </div>
-            <img src={noimage} alt="" width={600} height={400}/>
-            <p>{movie.description}</p>
-            <hr/>
-            <p>Actors: {movie.actors.map(a => <div className="d-flex flex-row" key={a}><b>{a}</b></div>)}</p>
+          </div>
+
+          <RatingDisplay rate={avg} />
+
+          <p>{movie.genre}</p>
+
+          <p>{movie.description}</p>
         </div>
 
-        <div className='d-flex flex-column justify-content-center align-items-center'>
-          <div className=''>
-                <p>Lastes Reviews</p>
 
-                <div className='cm d-flex flex-column align-items-center justify-content-start' style={{maxWidth:'400px'}}>
-                {reviews && reviews.length > 0 ? (
-                reviews.map(rev => (
-                  <div key={rev.id} className='d-flex align-items-center gap-3 justify-content-between' style={{borderBottom:'2px solid black'}}>
-                    <div style={{ margin: '0', padding: '0', width: '200px' }}>
-                      <ul style={{ listStyleType: 'none', padding: '0' }}>
-                        <li><b>User Name</b></li>
+        {//!Watchlist and Favorite button section
+        }
+        <div className='d-flex flex-column align-items-center ms-5 gap-3 my-5'>
+          <div className='d-flex flex-column justify-contenc-center align-items-center py-2' style={{ width:'250px',borderRadius:'8px',backgroundColor:'#000000' }}>
+            <h1 style={{fontSize:'27px'}}>{movie.publishedYear}</h1>
+            <p>Published Year</p>
+          </div>
+          <div className='d-flex flex-column justify-contenc-center align-items-center py-2' style={{ width:'250px',borderRadius:'8px',backgroundColor:'#000000' }}>
+            <h1 style={{fontSize:'27px'}}>{countComments}</h1>
+            <p>comments</p>
+            {showSuccessAlert && (
+                <small onClick={() => setShowSuccessAlert(false)} className='text-success'>Successfully added to watchlist</small>
+            )}
+            {showWarningAlert && (
+              <small onClick={() => setShowSuccessAlert(false)} className='text-danger'>{movie.title} has in watchlist</small>
+            )}
+            
+
+          </div>
+          <div style={{width:'100%'}} className='d-flex flex-column gap-2'>
+            <button className='btn btn-outline-warning d-flex align-items-center justify-content-center' onClick={addToWatchlist}>
+              <div className='mb-1'><i style={{fontSize:'25px'}} className="bi bi-plus"></i></div>
+              <div>Add to Watchlist</div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+     {//!Actors show
+     }
+     <div className='container my-5'>
+      <h2>Actors</h2>
+        <div className='actors d-flex gap-3'>
+        {movie.actors.map(a => 
+          <div key={a} className='d-flex flex-column justify-content-center align-items-center'>
+            <img src={noprofile} width={120} height={150} style={{borderRadius:'5px'}}/>
+            <p>{a}</p>
+          </div>  
+        )} 
+        </div>
+     </div>
+
+     {//!Reviews
+     }
+     <div className='container'>
+     <div>
+        <p>Lastest Reviews</p>
+
+        <div className='cm d-flex flex-column align-items-center justify-content-start' style={{ maxWidth: '70%', padding: '0 10px' }}>
+          {reviews && reviews.length > 0 ? (
+            reviews.map(rev => (
+              <div key={rev.id} className='d-flex flex-column align-items-start justify-content-between' style={{ borderBottom: '2px solid black', width: '100%' }}>
+                  <div className='w-100 d-flex justify-content-between'>
+                    <div className='px-2 py-2' style={{ width: '70%' }}>
+                      <ul style={{ listStyleType: 'none', padding: '0', margin: '0' }}>
+                        <li style={{ fontWeight: 'bold' }}>User Name</li>
                         <li style={{ fontSize: '10px' }}>{formatDate(rev.created)}</li>
                         <li>{rev.comment}</li>
                       </ul>
                     </div>
-                    <div>
+                    <div style={{marginLeft:'auto' }}>
                       <RatingDisplay rate={rev.rate} />
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>No reviews available for {movie.title}.</p>
-              )}
-                 
-                </div>
-          </div>
+              </div>
+            ))
+          ) : (
+            <p>No reviews available for {movie.title}.</p>
+          )}
+        </div>
         <button type="button" className="btn btn-outline-info my-2" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={isModalOpen? closeModal:openModal}>
           Rate this movie
         </button>
@@ -220,8 +283,9 @@ function MovieDetails() {
             </div>
           </div>
         )}
-        </div>
-      </div> 
+      </div>
+
+     </div>
 
     </div>
   )

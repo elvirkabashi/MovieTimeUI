@@ -35,7 +35,8 @@ function Home() {
         {movies && movies.map(movie => (
           <MovieCard key={movie.movieId}
             movieId={movie.movieId}
-            title={movie.title} />
+            title={movie.title}
+            publishedYear={movie.publishedYear} />
         ))}
       </div>
     </>

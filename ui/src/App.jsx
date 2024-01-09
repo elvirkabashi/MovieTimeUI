@@ -32,7 +32,7 @@ function App() {
             ) : (
               <>
                 <Navbar updateMainMargin={updateMainMargin} />
-                <div id="main" style={{ marginLeft: mainMargin, flexGrow: 1 }}>
+                <div id="main" style={{ marginLeft: mainMargin,flexGrow: 1  }}>
                   <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/movie/id/:id' element={<MovieDetails />} />
