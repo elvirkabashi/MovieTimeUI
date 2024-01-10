@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import MovieCard from "../../components/MovieCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
-
+import SearchBar from "../../components/SearchBar";
 function Home() {
   const [movies, setMovies] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,6 +32,7 @@ function Home() {
   return (
     <>
       <div className="container d-flex flex-wrap gap-3 py-5">
+        <SearchBar/>
         {movies && movies.map(movie => (
           <MovieCard key={movie.movieId}
             movieId={movie.movieId}
