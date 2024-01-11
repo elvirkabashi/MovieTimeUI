@@ -3,12 +3,15 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/modal.css'
-
+import Modal from 'react-modal';
 import noimage from '../assets/img/movietime.jpg'
 import noprofile from '../assets/img/noprofilepicture.jpg'
 
 import RatingForm from './RatingForm';
 import RatingDisplay from './RatingDisplay ';
+import MovieTriler from './MovieTriler';
+
+Modal.setAppElement('#root');
 
 function MovieDetails() {
 
@@ -23,6 +26,7 @@ function MovieDetails() {
     const [reviews,setReviews] = useState()
     const [avg,setAvg] = useState()
     const [countComments,setCountComment] = useState()
+    const [trailerModalIsOpen, setTrailerModalIsOpen] = useState(false);
   
     useEffect(() => {
       axios.get(`https://localhost:7147/api/Movies/${id}`)
@@ -122,6 +126,13 @@ function MovieDetails() {
     const closeModal = () => {
       setIsModalOpen(false);
     };
+    const openTrailerModal = () => {
+      setTrailerModalIsOpen(true);
+    };
+  
+    const closeTrailerModal = () => {
+      setTrailerModalIsOpen(false);
+    };
  
     if (loading) {
       return <LoadingSpinner />;
@@ -162,13 +173,28 @@ function MovieDetails() {
             <img src={noimage} alt="" style={{maxWidth:'220px',height:'250px',borderRadius:'10px'}} />
           </div>
           <div style={{width:'100%'}}>
-            <button style={{width:'100%',border:'none'}} className='btn'>
+            <button style={{width:'100%',border:'none'}} onClick={openTrailerModal} className='btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
               <i style={{fontSize:'25px'}} className="bi bi-play-circle text-warning px-2"></i>
               PLAY TRAILER
               </button>
           </div>
         </div>
 
+        {trailerModalIsOpen && (
+          <div className="modal-overlay">
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div className="modal-content">
+                <div className="modal-header text-center">
+                  <h5 className="modal-title px-5 py-2">{movie.title} Triler</h5>
+                  <button type="button" style={{ color: '#fff', filter: 'invert(1)' }}className="btn-close" onClick={closeTrailerModal}></button>
+                </div>
+                <div className="modal-body">
+                    <MovieTriler videoUrl={movie.trilerURL} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {//!Title, Rate , Genre and Description section
         }

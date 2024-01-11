@@ -93,7 +93,7 @@ function MovieCard({wlistId,movieId,title,publishedYear}) {
 
   
 MovieCard.propTypes = {
-    wlistId : PropTypes.number.isRequired,
+    wlistId : PropTypes.number,
     movieId : PropTypes.number.isRequired,
     title : PropTypes.string.isRequired,
     description : PropTypes.string,
