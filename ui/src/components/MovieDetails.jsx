@@ -25,6 +25,7 @@ function MovieDetails() {
     const [avg,setAvg] = useState()
     const [countComments,setCountComment] = useState()
     const [trailerModalIsOpen, setTrailerModalIsOpen] = useState(false);
+
   
     useEffect(() => {
       axios.get(`https://localhost:7147/api/Movies/${id}`)
@@ -37,7 +38,6 @@ function MovieDetails() {
           setError('Error fetching movies!');
           setLoading(false); 
         });
-
     
         axios.get(`https://localhost:7147/api/Ratings/ByMovieId/${id}`)
         .then(res=>{
@@ -54,6 +54,7 @@ function MovieDetails() {
           setCountComment(res.data)
         })
     }, [id,reviews,isModalOpen]);
+
 
     const addToWatchlist = async () => {
       try {
@@ -147,7 +148,10 @@ function MovieDetails() {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('en-US', options);
       }
+
       const noimg =new URL(`../../../../W23G05/MovieTime/wwwroot/images/${movie.img}`,import.meta.url).href;
+      
+
   return (
     <div className="text-white">
 
@@ -254,10 +258,10 @@ function MovieDetails() {
       <h2>Actors</h2>
         <div className='actors d-flex gap-3'>
         {movie.actors.map(a => 
-          <div key={a} className='d-flex flex-column justify-content-center align-items-center'>
-            <img src={noprofile} width={120} height={150} style={{borderRadius:'5px'}}/>
-            <p>{a}</p>
-          </div>  
+          <a style={{textDecoration:'none',color:'inherit'}} href={`/actor/${a.actorId}`} key={a.actorId}><div  className='d-flex flex-column justify-content-center align-items-center'>
+            <img src={a.img == null ? noprofile : new URL(`../../../../W23G05/MovieTime/wwwroot/actors/${a.img}`,import.meta.url).href} width={120} height={145} style={{borderRadius:'5px'}}/>
+            <p>{a.name}</p>
+          </div></a>  
         )} 
         </div>
      </div>

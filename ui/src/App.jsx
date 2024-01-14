@@ -10,6 +10,7 @@ import { useState } from 'react';
 import MovieDetails from './components/MovieDetails';
 import Watchlist from './pages/WatchlistPage/Watchlist';
 import Favorite from './pages/FavoritePage/Favorite';
+import ActorProfile from './components/ActorProfile';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
                     <Route path='/movie/id/:id' element={<MovieDetails />} />
                     <Route path='/watchlist' element={<Watchlist />} />
                     <Route path='/favorite' element={<Favorite />} />
+                    <Route path='/actor/:id' element={<ActorProfile />} />
                   </Routes>
                 </div>
               </>
