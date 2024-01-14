@@ -1,0 +1,42 @@
+.scroll-container-year,
+.scroll-container-rate {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scroll {
+  overflow: hidden;
+}
+
+.arrow {
+  position: relative;
+}
+
+.arrow-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.arrow-icon:hover {
+  transform: scale(1.1);
+}
+
+.right-icon {
+  background-color: rgba(90, 90, 90, 0.8);
+  position: relative;
+  right: 60px;
+  padding: 5px;
+}
+
+.left-icon img {
+  rotate: 180deg;
+}
+
+.left-icon {
+  background-color: rgba(90, 90, 90, 0.5);
+  position: relative;
+  left: 60px;
+  padding: 5px;
+  z-index: 9;
+}

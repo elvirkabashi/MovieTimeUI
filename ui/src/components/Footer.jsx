@@ -1,7 +1,7 @@
 
 function Footer() {
   return (
-    <div className="cotainer-fluid" style={{backgroundColor: '#A73911'}}>
+    <div className="cotainer-fluid mt-5" style={{backgroundColor: '#A73911'}}>
       <div className="container d-flex flex-column justify-content-center py-3 px-5">
         <div>
             <ul className="d-flex flex-wrap gap-3 justify-content-center list-unstyled text-center">

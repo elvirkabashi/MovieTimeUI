@@ -56,6 +56,7 @@ function Favorite (){
                       favoriteId={movie.favoriteId}
                       movieId={movie.movieId}
                       title={movie.title} 
+                      photo={movie.img}
                     />
                   </div>
                 ))}

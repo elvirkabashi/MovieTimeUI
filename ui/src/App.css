@@ -23,3 +23,13 @@
     width: 173px;
 
 }
+.bi-chevron-right{
+    color: white;
+}
+.a{
+    cursor: pointer;
+}
+.a:hover .bi-chevron-right{
+    cursor: pointer;
+    color: red;
+}

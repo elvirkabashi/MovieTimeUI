@@ -37,7 +37,7 @@ function Watchlist() {
     <div className="container d-flex gap-3 text-white py-5">
       {watchlist.length > 0 ? (
         watchlist.map((m) => (
-          <MovieCard key={m.id} wlistId={m.id} movieId={m.movieId} title={m.title} />
+          <MovieCard key={m.id} wlistId={m.id} movieId={m.movieId} title={m.title} photo={m.img}/>
         ))
       ) : (
         <h3 className="text-center">Your watchlist is empty.</h3>

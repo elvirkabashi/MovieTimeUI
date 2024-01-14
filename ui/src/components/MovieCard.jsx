@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
-import noimage from '../assets/img/movietime.jpg'
+//import noimg from '../assets/img/movietime.jpg'
+//import noimg from `../../../../W23G05/MovieTime/wwwroot/images/${img}`
 import PropTypes from 'prop-types'; 
+//import Card from 'react-bootstrap/Card';
 import axios from 'axios';
 
 
-function MovieCard({wlistId,movieId,title,publishedYear}) {
+function MovieCard({wlistId,movieId,title,publishedYear,photo}) {
 
   const [wtachListButton,setWtachListButton] = useState(false);
+  const [image,setImage] = useState()
   
+  //console.log('img '+photo)
+
   useEffect(()=>{
     const currentUrl = window.location.href;
     if(currentUrl.split("/")[3] === 'watchlist'){
       setWtachListButton(true) 
     }
-
+    const noimg =new URL(`../../../../W23G05/MovieTime/wwwroot/images/${photo}`,import.meta.url).href;
+    setImage(noimg)
 
     const tooltipElement = document.querySelector('[data-bs-toggle="tooltip"]');
     if (tooltipElement) {
@@ -26,7 +32,7 @@ function MovieCard({wlistId,movieId,title,publishedYear}) {
         tooltipInstance.dispose();
       }
     };
-  },[])
+  },[photo])
 
 
 
@@ -58,7 +64,7 @@ function MovieCard({wlistId,movieId,title,publishedYear}) {
       width: '280px',
       height: '150px',
       position: 'relative',
-      backgroundImage: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 85%), url(${noimage})`,
+      backgroundImage: `linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.8) 85%), url(${image})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center top',
@@ -99,6 +105,7 @@ MovieCard.propTypes = {
     description : PropTypes.string,
     publishedYear : PropTypes.number,
     genre : PropTypes.string,
+    photo : PropTypes.string.isRequired,
     actors : PropTypes.arrayOf(PropTypes.string)
 }
 

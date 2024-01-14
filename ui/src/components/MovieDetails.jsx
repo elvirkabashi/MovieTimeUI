@@ -4,9 +4,7 @@ import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
 import '../assets/css/modal.css'
 import Modal from 'react-modal';
-import noimage from '../assets/img/movietime.jpg'
 import noprofile from '../assets/img/noprofilepicture.jpg'
-
 import RatingForm from './RatingForm';
 import RatingDisplay from './RatingDisplay ';
 import MovieTriler from './MovieTriler';
@@ -40,6 +38,7 @@ function MovieDetails() {
           setLoading(false); 
         });
 
+    
         axios.get(`https://localhost:7147/api/Ratings/ByMovieId/${id}`)
         .then(res=>{
           setReviews(res.data)
@@ -148,7 +147,7 @@ function MovieDetails() {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('en-US', options);
       }
-
+      const noimg =new URL(`../../../../W23G05/MovieTime/wwwroot/images/${movie.img}`,import.meta.url).href;
   return (
     <div className="text-white">
 
@@ -162,7 +161,7 @@ function MovieDetails() {
             linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)) top,
             linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)) left,
             linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)) right,
-            url(${noimage}) center/cover no-repeat
+            url(${noimg}) center/cover no-repeat
           `,
         }}>
           
@@ -170,7 +169,7 @@ function MovieDetails() {
         }
         <div className='d-flex flex-column align-items-center'>
           <div style={{ }}>
-            <img src={noimage} alt="" style={{maxWidth:'220px',height:'250px',borderRadius:'10px'}} />
+            <img src={noimg} alt="" style={{maxWidth:'220px',height:'250px',borderRadius:'10px'}} />
           </div>
           <div style={{width:'100%'}}>
             <button style={{width:'100%',border:'none'}} onClick={openTrailerModal} className='btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
