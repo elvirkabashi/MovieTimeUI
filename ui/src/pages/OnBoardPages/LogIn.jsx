@@ -7,24 +7,37 @@ import './assets/css/style.css'
 function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error,setError] = useState()
 
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         try {
             const response = await axios.post('http://localhost:7147/api/authentication/login', {
                 Email: email,
                 Password: password,
             });
-
+    
             Cookies.set('authToken', response.data.token, { expires: 7 }); 
-
+    
             window.location.href = '/';
         } catch (error) {
-            console.error('Login failed', error);
+
+            if (error.response && error.response.data) {
+                const { errors } = error.response.data;
+    
+
+                setError(errors)
+
+            } else {
+
+                console.error('Login failed. An unexpected error occurred:', error.message);
+            }
         }
     };
+    
+    
 
   return (
     <>
@@ -38,6 +51,7 @@ function LogIn() {
            
                 <div className='me-5 p-5' style={{borderRight: '2px solid #a63910',width:'35%'}}>
                     <p className='text-white py-2 fs-4'>Log in to your account</p>
+                    <p className='text-danger'>{error}</p>
                     <form onSubmit={handleLogin}>
                         <div className="">
                         <label className="form-label text-white">Email</label>

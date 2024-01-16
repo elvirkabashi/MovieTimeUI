@@ -5,6 +5,9 @@ import Logo from '../../components/Logo'
 import './assets/css/style.css'
 function SingUp() {
 
+    const [error,setError] = useState()
+
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -26,18 +29,21 @@ function SingUp() {
           Email: formData.email,
           Password: formData.password
         };
+
       
-        try {
+          
           const response = await axios.post('http://localhost:7147/api/authentication/register', jsonData);
       
           if (!response.data.error) {
-            window.location.href = '/login';
+              window.location.href = '/login';
           } else {
-            console.error('Registration failed:', response.data.message);
+              setError(response.data.errors);
+              console.log(response.data.errors)
           }
-        } catch (error) {
-          console.error('An error occurred during registration:', error.message);
-        }
+          
+        
+      
+        
       };
 
   return (
@@ -52,6 +58,7 @@ function SingUp() {
            
            <div className='me-5 p-5' style={{borderRight: '2px solid #a63910',width:'35%'}}>
                <p className='text-white text-center py-2 fs-4'>Sign Up</p>
+               <p className='text-danger'>{error}</p>
                <form onSubmit={handleSubmit}>
                     <div className="">
                         <label className="form-label text-white">Name</label>
@@ -62,6 +69,7 @@ function SingUp() {
                             value={formData.name}
                             onChange={handleChange}
                             placeholder='Your name'
+                            required
                         />
                     </div>
                     <div className="">
@@ -73,6 +81,7 @@ function SingUp() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder='Your email'
+                            required
                         />
                        </div>
                     <div className="mb-3">
@@ -84,8 +93,19 @@ function SingUp() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder='Password'
+                            required
                         />
-                       </div>
+                      </div>
+                      {/* <div className="mb-3">
+                        <label className="form-label text-white">Confirm Password</label>
+                        <input
+                            type='password'
+                            className='form-control '
+                            name='password'
+                            placeholder='Confirm Password'
+                            required
+                        />
+                      </div> */}
                    
 
                    <button type="submit" className="btn custom-btn-outline-primary">Sign Up</button>

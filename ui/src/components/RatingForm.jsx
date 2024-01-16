@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaStar } from "react-icons/fa";
+import { getUserInfo ,getAuthToken} from '../utils/Cookies';
+
 
 const colors = {
   orange: "#FFBA5A",
@@ -12,8 +14,12 @@ const RatingForm = ({ movieId ,onSubmit }) => {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const [comment, setComment] = useState('');
-
+  const [userInfo, setUserInfo] = useState(null);
   const stars = Array(5).fill(0);
+  const token = getAuthToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
   const handleClick = (value) => {
     setCurrentValue(value);
@@ -26,17 +32,26 @@ const RatingForm = ({ movieId ,onSubmit }) => {
   const handleMouseLeave = () => {
     setHoverValue(undefined);
   };
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const user = await getUserInfo();
+      setUserInfo(user);
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleSubmit = async () => {
     // Prepare the data to be sent
     const ratingData = {
+      UserName: userInfo.userName,
       MovieId: movieId,
       Rate: currentValue,
       Comment: comment,
     };
 
     try {
-      await axios.post('http://localhost:7147/api/ratings', ratingData);
+      await axios.post('http://localhost:7147/api/ratings', ratingData,{headers});
       onSubmit();
     } catch (error) {
       // Handle errors

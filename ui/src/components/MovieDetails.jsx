@@ -303,7 +303,7 @@ function MovieDetails() {
                   <div className='w-100 d-flex justify-content-between'>
                     <div className='px-2 py-2' style={{ width: '70%' }}>
                       <ul style={{ listStyleType: 'none', padding: '0', margin: '0' }}>
-                        <li style={{ fontWeight: 'bold' }}>User Name</li>
+                        <li style={{ fontWeight: 'bold' }}>{rev.userName}</li>
                         <li style={{ fontSize: '10px' }}>{formatDate(rev.created)}</li>
                         <li>{rev.comment}</li>
                       </ul>

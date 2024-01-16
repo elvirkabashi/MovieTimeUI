@@ -4,12 +4,17 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'; 
 //import Card from 'react-bootstrap/Card';
 import axios from 'axios';
+import { getAuthToken } from '../utils/Cookies';
 
 
 function MovieCard({wlistId,movieId,title,publishedYear,photo}) {
 
   const [wtachListButton,setWtachListButton] = useState(false);
   const [image,setImage] = useState()
+  const token = getAuthToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   
   //console.log('img '+photo)
 
@@ -42,7 +47,7 @@ function MovieCard({wlistId,movieId,title,publishedYear,photo}) {
     if (confirmed) {
       try {
         
-        const response = await axios.delete(`https://localhost:7147/api/Watchlists/${wlistId}`);
+        const response = await axios.delete(`http://localhost:7147/api/Watchlists/${wlistId}`,{headers});
 
         if (response.status === 200) {
           console.log('Movie deleted successfully');
