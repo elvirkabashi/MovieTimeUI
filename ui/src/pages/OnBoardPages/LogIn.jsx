@@ -1,33 +1,29 @@
 import { useState } from 'react';
 import Ellipse from '../../components/Ellipse'
 import Logo from '../../components/Logo'
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import './assets/css/style.css'
 function LogIn() {
-
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-  
+
+
     const handleLogin = async (e) => {
-      e.preventDefault();
-  
-      try {
-        const response = await axios.post('http://localhost:7010/api/authorization/Login', {
-          Username: username,
-          Password: password,
-        });
-  
-        // Assuming the API returns a token
-        const token = response.data.token;
-  
-        // Store the token in your application state or localStorage for future use
-        console.log('Token:', token);
-  
-        // Redirect or perform any other action upon successful login
-      } catch (error) {
-        // Handle unsuccessful login (e.g., display an error message)
-        console.error('Login failed', error);
-      }
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:7147/api/authentication/login', {
+                Email: email,
+                Password: password,
+            });
+
+            Cookies.set('authToken', response.data.token, { expires: 7 }); 
+
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Login failed', error);
+        }
     };
 
   return (
@@ -44,13 +40,13 @@ function LogIn() {
                     <p className='text-white py-2 fs-4'>Log in to your account</p>
                     <form onSubmit={handleLogin}>
                         <div className="">
-                        <label className="form-label text-white">Username</label>
+                        <label className="form-label text-white">Email</label>
                         <input
                             type="text"
                             className="form-control"
                             placeholder='Your Username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         </div>
                         <div className="">

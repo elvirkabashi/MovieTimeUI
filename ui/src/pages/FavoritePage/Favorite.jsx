@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import axios from 'axios';
 import LoadingSpinner from "../../components/LoadingSpinner";
 import MovieCard from "../../components/MovieCard";
+import { getAuthToken } from "../../utils/Cookies";
 
 
 function Favorite (){
@@ -10,24 +11,28 @@ function Favorite (){
     const[favoriteMovies,setFavoriteMovies]=useState([])
 
     useEffect(() => {
-        const fetchFavoriteMovies = async () => {
-          try {
-            const response = await axios.get('https://localhost:7147/api/Favorites');
-    
-            if (response.status === 200) {
-              setFavoriteMovies(response.data);
-            } else {
-              setError('Failed to fetch favorite movies');
-            }
-          } catch (error) {
-            setError('Error fetching favorite movies');
-          } finally {
-            setLoading(false);
+      const fetchFavoriteMovies = async () => {
+        try {
+          const response = await axios.get('http://localhost:7147/api/Favorites', {
+            headers: {
+              Authorization: `Bearer ${getAuthToken()}`, // Përdor tokenin nga cookies
+            },
+          });
+  
+          if (response.status === 200) {
+            setFavoriteMovies(response.data);
+          } else {
+            setError('Failed to fetch favorite movies');
           }
-        };
-    
-        fetchFavoriteMovies();
-      }, [favoriteMovies]);
+        } catch (error) {
+          setError('Error fetching favorite movies');
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchFavoriteMovies();
+    }, []);
 
     
       

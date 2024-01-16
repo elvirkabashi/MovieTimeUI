@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
+import { getAuthToken } from '../utils/Cookies';
 
 function ActorProfile() {
 
@@ -9,9 +10,13 @@ function ActorProfile() {
     const [actor,setActor] = useState()
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const token = getAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
 
     useEffect(()=>{
-        axios.get(`https://localhost:7147/api/Actors/${id}`)
+        axios.get(`http://localhost:7147/api/Actors/${id}`,{headers})
         .then(res => {
             setActor(res.data);
             setLoading(false); 

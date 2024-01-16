@@ -36,7 +36,7 @@ const RatingForm = ({ movieId ,onSubmit }) => {
     };
 
     try {
-      await axios.post('https://localhost:7147/api/ratings', ratingData);
+      await axios.post('http://localhost:7147/api/ratings', ratingData);
       onSubmit();
     } catch (error) {
       // Handle errors

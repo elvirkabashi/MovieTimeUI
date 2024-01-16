@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import axios from 'axios';
 import LoadingSpinner from "../../components/LoadingSpinner";
 import MovieCard from "../../components/MovieCard";
+import { getAuthToken } from "../../utils/Cookies";
 
 
 function Watchlist() {
@@ -9,9 +10,13 @@ function Watchlist() {
     const [watchlist,setWatchlist] = useState()
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const token = getAuthToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
   
     useEffect(() => {
-      axios.get(`https://localhost:7147/api/Watchlists`)
+      axios.get(`http://localhost:7147/api/Watchlists`,{headers})
         .then(res => {
         setWatchlist(res.data);
           setLoading(false); 

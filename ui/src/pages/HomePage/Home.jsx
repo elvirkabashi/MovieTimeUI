@@ -5,6 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { Link } from 'react-scroll'
 import './assets/css/scroll.css'
 import arrow from '../../assets/img/rightArrow.svg'
+import { getAuthToken } from "../../utils/Cookies";
 
 function Home() {
   const [movies, setMovies] = useState();
@@ -14,14 +15,20 @@ function Home() {
   const [scrollPositionYear, setScrollPositionYear] = useState();
   const [scrollPositionRate, setScrollPositionRate] = useState();
 
-  //console.log('from home '+movies[1].img)
+  const token = getAuthToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+
+
   useEffect(() => {
-    let apiUrl = 'https://localhost:7147/api/Movies';
+    let apiUrl = 'http://localhost:7147/api/Movies';
     if (searchQuery.trim() !== '') {
-      apiUrl += `?query=${encodeURIComponent(searchQuery)}`;
+      apiUrl += `?query=${encodeURIComponent(searchQuery)}`
     }
 
-    axios.get(apiUrl)
+    axios.get(apiUrl, { headers })
       .then(res => {
         setMovies(res.data);
         setLoading(false);
@@ -30,7 +37,7 @@ function Home() {
         setLoading(false);
       });
 
-      axios.get(`https://localhost:7147/api/Ratings/TopRatedMovies`)
+      axios.get(`http://localhost:7147/api/Ratings/TopRatedMovies`,{headers})
         .then(res=>{
           setRatings(res.data)
       })
@@ -175,18 +182,18 @@ function Home() {
                       </Link>
                     </div>
                     <div className="scroll d-flex gap-3 scroll-container-year" onScroll={(e) => setScrollPositionYear(e.target.scrollLeft)}>
-                      {movies &&
-                        movies
-                          .filter((movie) => ratings.some((rating) => rating.movieId === movie.movieId))
-                          .map((movie) => (
-                            <MovieCard
-                              key={movie.movieId}
-                              movieId={movie.movieId}
-                              title={movie.title}
-                              publishedYear={movie.publishedYear}
-                              photo={movie.img}
-                            />
-                          ))}
+                    {movies &&
+                      movies
+                        .filter((movie) => ratings && ratings.some((rating) => rating.movieId === movie.movieId))
+                        .map((movie) => (
+                          <MovieCard
+                            key={movie.movieId}
+                            movieId={movie.movieId}
+                            title={movie.title}
+                            publishedYear={movie.publishedYear}
+                            photo={movie.img}
+                          />
+                        ))}
                     </div>
                     <div className="right-icon d-flex align-items-center">
                       <Link

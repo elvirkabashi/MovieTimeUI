@@ -7,7 +7,6 @@ function SingUp() {
 
     const [formData, setFormData] = useState({
         name: '',
-        username: '',
         email: '',
         password: '',
       });
@@ -24,16 +23,21 @@ function SingUp() {
       
         const jsonData = {
           Name: formData.name,
-          Username: formData.username,
           Email: formData.email,
           Password: formData.password
         };
       
-        
-            const response = await axios.post('http://localhost:7010/api/authorization/Registration', jsonData);
-            console.log('Response:', response.data);
-            // Add logic based on the response if needed
-         
+        try {
+          const response = await axios.post('http://localhost:7147/api/authentication/register', jsonData);
+      
+          if (!response.data.error) {
+            window.location.href = '/login';
+          } else {
+            console.error('Registration failed:', response.data.message);
+          }
+        } catch (error) {
+          console.error('An error occurred during registration:', error.message);
+        }
       };
 
   return (
@@ -58,17 +62,6 @@ function SingUp() {
                             value={formData.name}
                             onChange={handleChange}
                             placeholder='Your name'
-                        />
-                    </div>
-                    <div className="">
-                        <label className="form-label text-white">Username</label>
-                        <input
-                            type='text'
-                            className='form-control'
-                            name='username'
-                            value={formData.username}
-                            onChange={handleChange}
-                            placeholder='Username'
                         />
                     </div>
                     <div className="">

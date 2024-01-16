@@ -8,6 +8,7 @@ import noprofile from '../assets/img/noprofilepicture.jpg'
 import RatingForm from './RatingForm';
 import RatingDisplay from './RatingDisplay ';
 import MovieTriler from './MovieTriler';
+import { getAuthToken } from '../utils/Cookies';
 
 Modal.setAppElement('#root');
 
@@ -25,41 +26,43 @@ function MovieDetails() {
     const [avg,setAvg] = useState()
     const [countComments,setCountComment] = useState()
     const [trailerModalIsOpen, setTrailerModalIsOpen] = useState(false);
-
+    const token = getAuthToken();
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
   
     useEffect(() => {
-      axios.get(`https://localhost:7147/api/Movies/${id}`)
-        .then(res => {
-          setMovie(res.data);
-          setLoading(false); 
-        })
-        .catch(err => {
-          console.error('Error fetching movies:', err);
-          setError('Error fetching movies!');
-          setLoading(false); 
-        });
+      const fetchMovieDetails = async () => {
+        try {
+          
     
-        axios.get(`https://localhost:7147/api/Ratings/ByMovieId/${id}`)
-        .then(res=>{
-          setReviews(res.data)
-        })
-
-        axios.get(`https://localhost:7147/api/Ratings/AverageRating/${id}`)
-        .then(res=>{
-          setAvg(res.data)
-        })
-
-        axios.get(`https://localhost:7147/api/Ratings/CountByMovieId/${id}`)
-        .then(res=>{
-          setCountComment(res.data)
-        })
-    }, [id,reviews,isModalOpen]);
+          const [movieResponse, ratingsResponse, averageRatingResponse, countResponse] = await Promise.all([
+            axios.get(`http://localhost:7147/api/Movies/${id}`, { headers }),
+            axios.get(`http://localhost:7147/api/Ratings/ByMovieId/${id}`, { headers }),
+            axios.get(`http://localhost:7147/api/Ratings/AverageRating/${id}`, { headers }),
+            axios.get(`http://localhost:7147/api/Ratings/CountByMovieId/${id}`, { headers }),
+          ]);
+    
+          setMovie(movieResponse.data);
+          setReviews(ratingsResponse.data);
+          setAvg(averageRatingResponse.data);
+          setCountComment(countResponse.data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setError('Error fetching data!');
+          setLoading(false);
+        }
+      };
+    
+      fetchMovieDetails();
+    }, [id, isModalOpen]);
 
 
     const addToWatchlist = async () => {
       try {
 
-        const watchlistResponse = await axios.get('https://localhost:7147/api/Watchlists');
+        const watchlistResponse = await axios.get('http://localhost:7147/api/Watchlists', { headers });
         const currentWatchlist = watchlistResponse.data;
 
 
@@ -67,7 +70,7 @@ function MovieDetails() {
           setShowWarningAlert(true);
         } else {
 
-          await axios.post('https://localhost:7147/api/Watchlists', { movieId: id });
+          await axios.post('http://localhost:7147/api/Watchlists', { movieId: id }, { headers });
           setShowSuccessAlert(true);
         }
       } catch (error) {
@@ -80,7 +83,12 @@ function MovieDetails() {
 
         const checkIfInFavorites = async () => {
           try {
-            const favoritesResponse = await axios.get('https://localhost:7147/api/Favorites');
+            const authToken = getAuthToken();
+            const favoritesResponse = await axios.get('http://localhost:7147/api/Favorites', {
+              headers: {
+                  Authorization: `Bearer ${authToken}`
+              }
+          });
             const favorites = favoritesResponse.data;
             const isInFavorites = favorites.some(item => item.movieId.toString() === id.toString());
             setIsInFavorites(isInFavorites);
@@ -103,22 +111,38 @@ function MovieDetails() {
 
     const addToFavorites = async () => {
       try {
-        const favoritesResponse = await axios.get('https://localhost:7147/api/Favorites');
-        const currentFavorites = favoritesResponse.data;
-        console.log(currentFavorites.some(item => item.movieId.toString() === id))
-        if (currentFavorites.some(item => item.movieId.toString() === id)) {
-          
-          const favoriteToDelete = currentFavorites.find(item => item.movieId.toString() === id);
-          await axios.delete(`https://localhost:7147/api/Favorites/${favoriteToDelete.favoriteId}`);
-          setIsInFavorites(false);
-        } else {
-          await axios.post('https://localhost:7147/api/Favorites', { movieId: id });
-          setIsInFavorites(true);
-        }
+          const authToken = getAuthToken();
+  
+          const favoritesResponse = await axios.get('http://localhost:7147/api/Favorites', {
+              headers: {
+                  Authorization: `Bearer ${authToken}`
+              }
+          });
+  
+          const currentFavorites = favoritesResponse.data;
+          console.log(currentFavorites.some(item => item.movieId.toString() === id))
+  
+          if (currentFavorites.some(item => item.movieId.toString() === id)) {
+              const favoriteToDelete = currentFavorites.find(item => item.movieId.toString() === id);
+              await axios.delete(`http://localhost:7147/api/Favorites/${favoriteToDelete.favoriteId}`, {
+                  headers: {
+                      Authorization: `Bearer ${authToken}`
+                  }
+              });
+              setIsInFavorites(false);
+          } else {
+              await axios.post('http://localhost:7147/api/Favorites', { movieId: id }, {
+                  headers: {
+                      Authorization: `Bearer ${authToken}`
+                  }
+              });
+              setIsInFavorites(true);
+          }
       } catch (error) {
-        console.error('Error adding to favorites:', error);
+          console.error('Error adding to favorites:', error);
       }
-    };
+  };
+
     const openModal = () => {
       setIsModalOpen(true);
     };
