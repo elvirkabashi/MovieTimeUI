@@ -12,6 +12,7 @@ import Watchlist from './pages/WatchlistPage/Watchlist';
 import Favorite from './pages/FavoritePage/Favorite';
 import ActorProfile from './components/ActorProfile';
 import { getAuthToken } from './utils/Cookies';
+import MovieByGenre from './components/MovieByGenre';
 
 function App() {
   const [mainMargin, setMainMargin] = useState(0);
@@ -50,6 +51,7 @@ function App() {
                 <Route path='/watchlist' element={<Watchlist />} />
                 <Route path='/favorite' element={<Favorite />} />
                 <Route path='/actor/:id' element={<ActorProfile />} />
+                <Route path='/byGenre/:genre' element={<MovieByGenre />} />
               </Routes>
             </div>
           </>

@@ -2,13 +2,24 @@ import { useEffect, useState } from 'react';
 import './../assets/css/nav.css'
 import PropTypes from 'prop-types'; 
 import Logo from './Logo';
+import axios from 'axios';
 import Cookies from 'js-cookie';
-import { getUserInfo } from '../utils/Cookies';
+import { getAuthToken, getUserInfo } from '../utils/Cookies';
 
 function Navbar({ updateMainMargin }) {
     const [sideNavWidth, setSideNavWidth] = useState(0);
     const [mainMargin, setMainMargin] = useState(0);
     const [userInfo, setUserInfo] = useState(null);
+    const [genres,setGenres] = useState()
+    const token = getAuthToken();
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+
+    useEffect(() =>{
+        axios.get(`http://localhost:7147/api/genres`, { headers })
+      .then(res => setGenres(res.data))
+    },[genres])
   
 
     const openNav = () => {
@@ -53,13 +64,25 @@ function Navbar({ updateMainMargin }) {
           </a>
         </div>
   
-        <div className='d-flex align-items-center justify-content-between px-5' style={{backgroundColor: ''}}>
+        <div className='d-flex align-items-center justify-content-between px-5' style={{backgroundColor: 'black'}}>
           
           <div id='main' className='d-flex align-items-center gap-4' style={{ marginLeft: mainMargin }}>
             <span onClick={openNav} className='text-white'><h1 className="bi bi-list"></h1></span>
               <Logo />
-              <a href="" className='text-white mt-4 ms-4'>Movies</a>
-              <a href="" className='text-white mt-4'>Genres</a>
+              <a href="" className='text-white ms-4'>Movies</a>
+              <div className="btn-group">
+              <button className="btn border-none text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Genres
+              </button>
+              <ul className="dropdown-menu " style={{width:'210px',backgroundColor:'black'}}>
+                <div className='d-flex flex-wrap gap-3 px-2'>
+                  {genres && genres.map(g => (
+                    <a href={`/byGenre/${g.genreName}`} key={g.genreId} className='text-white'>{g.genreName}</a>
+                  ))}
+                  
+                </div>
+              </ul>
+            </div>
           </div>
           <div className='d-flex align-items-center'>
             {userInfo && <div className='text-white'><i className="bi bi-person-circle me-1" style={{fontSize:'22px'}}></i>{userInfo.userName}</div>}
