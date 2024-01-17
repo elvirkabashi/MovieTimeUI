@@ -18,9 +18,9 @@
     display: flex;
     padding-top: 38px;
     padding-left: 91px;
-
 justify-content: space-between;
 align-items: center;
+
   }
   .hero-text{
     color: #FFF;

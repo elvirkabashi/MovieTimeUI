@@ -53,13 +53,13 @@ function Navbar({ updateMainMargin }) {
           </a>
         </div>
   
-        <div className='d-flex align-items-center justify-content-between px-5' style={{backgroundColor: '#A73911'}}>
+        <div className='d-flex align-items-center justify-content-between px-5' style={{backgroundColor: ''}}>
           
-          <div id='main' className='d-flex align-items-center gap-3' style={{ marginLeft: mainMargin }}>
+          <div id='main' className='d-flex align-items-center gap-4' style={{ marginLeft: mainMargin }}>
             <span onClick={openNav} className='text-white'><h1 className="bi bi-list"></h1></span>
               <Logo />
-              <a href="" className='text-white'>Movies</a>
-              <a href="" className='text-white'>Genres</a>
+              <a href="" className='text-white mt-4 ms-4'>Movies</a>
+              <a href="" className='text-white mt-4'>Genres</a>
           </div>
           <div className='d-flex align-items-center'>
             {userInfo && <div className='text-white'><i className="bi bi-person-circle me-1" style={{fontSize:'22px'}}></i>{userInfo.userName}</div>}
