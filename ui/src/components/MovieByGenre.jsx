@@ -13,11 +13,12 @@ export default function MovieByGenre() {
     };
 
     useEffect(()=>{
+      
         axios.get(`http://localhost:7147/api/Movies/?query=${genre}`,{headers})
         .then(res=>{
           setMovies(res.data)
       })
-    },[])
+    },[genre])
 
   return (
     <>

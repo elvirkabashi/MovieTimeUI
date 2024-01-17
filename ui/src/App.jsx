@@ -13,6 +13,7 @@ import Favorite from './pages/FavoritePage/Favorite';
 import ActorProfile from './components/ActorProfile';
 import { getAuthToken } from './utils/Cookies';
 import MovieByGenre from './components/MovieByGenre';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [mainMargin, setMainMargin] = useState(0);
@@ -52,6 +53,7 @@ function App() {
                 <Route path='/favorite' element={<Favorite />} />
                 <Route path='/actor/:id' element={<ActorProfile />} />
                 <Route path='/byGenre/:genre' element={<MovieByGenre />} />
+                <Route path='/UserProfile' element={<UserProfile />} />
               </Routes>
             </div>
           </>

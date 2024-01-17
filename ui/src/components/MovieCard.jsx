@@ -90,7 +90,7 @@ function MovieCard({wlistId,movieId,title,publishedYear,photo}) {
               width: '100%',
             }}
           >
-         <b style={{fontSize:'22px'}} className="card-title text-white">{title}</b>
+         <b style={{ fontSize: '20px'}} className="card-title text-white">{title}</b>
           <ul className='text-white d-flex gap-1' style={{ listStyleType: 'none', margin: 0, padding: 0 ,fontSize:'12px'}}>
             <li>2h 12m</li>
             <li> • </li>

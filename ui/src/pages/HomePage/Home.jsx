@@ -12,9 +12,10 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [ratings, setRatings] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [scrollPositionYear, setScrollPositionYear] = useState();
+  
+  const [scrollPositionLastes, setScrollPositionLastes] = useState();
   const [scrollPositionRate, setScrollPositionRate] = useState();
-
+  const [scrollPositionYear, setScrollPositionYear] = useState();
   const token = getAuthToken();
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -69,6 +70,8 @@ function Home() {
       setScrollPositionYear(0, container.scrollLeft);
     } else if (section === 'rate') {
       setScrollPositionRate(0, container.scrollLeft);
+    }else if(section === 'lastes'){
+      setScrollPositionLastes(0,container.scrollLeft)
     }
   };
 
@@ -111,6 +114,61 @@ function Home() {
                   <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
                     <div className="left-icon d-flex align-items-center">
                       <Link
+                        to="scroll-container-lastes"
+                        spy={true}
+                        smooth={true}
+                        offset={-50}
+                        duration={500}
+                      >
+                        <img
+                          src={arrow}
+                          width={50}
+                          height={50}
+                          className="arrow-icon"
+                          onClick={(e) => handleScroll(e,'left', 'lastes')}
+                        />
+                      </Link>
+                    </div>
+                    <div className="scroll d-flex gap-3 scroll-container-lastes" onScroll={(e) => setScrollPositionLastes(e.target.scrollLeft)}>
+                    {movies &&
+                      movies
+                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                        .map((movie) => (
+                          <MovieCard
+                            key={movie.movieId}
+                            movieId={movie.movieId}
+                            title={movie.title}
+                            publishedYear={movie.publishedYear}
+                            photo={movie.img}
+                          />
+                        ))}
+                    </div>
+                    <div className="right-icon d-flex align-items-center">
+                      <Link
+                        to="scroll-container-lastes"
+                        spy={true}
+                        smooth={true}
+                        offset={50}
+                        duration={500}
+                      >
+                        <img
+                          src={arrow}
+                          width={50}
+                          height={50}
+                          className="arrow-icon"
+                          onClick={(e) => handleScroll(e,'right', 'lastes')}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="a d-flex align-items-center mt-5">
+                    <h3 className="text-white">Trending Movies</h3><i style={{fontSize:'30px'}} className="bi bi-chevron-right  mb-2"></i>
+                  </div>
+                  <p style={{color:'#E2E2E2'}}>Movies with the highest Rate number</p>
+                  <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
+                    <div className="left-icon d-flex align-items-center">
+                      <Link
                         to="scroll-container-rate"
                         spy={true}
                         smooth={true}
@@ -129,7 +187,7 @@ function Home() {
                     <div className="scroll d-flex gap-3 scroll-container-rate" onScroll={(e) => setScrollPositionRate(e.target.scrollLeft)}>
                     {movies &&
                       movies
-                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                        .filter((movie) => ratings && ratings.some((rating) => rating.movieId === movie.movieId))
                         .map((movie) => (
                           <MovieCard
                             key={movie.movieId}
@@ -154,61 +212,6 @@ function Home() {
                           height={50}
                           className="arrow-icon"
                           onClick={(e) => handleScroll(e,'right', 'rate')}
-                        />
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="a d-flex align-items-center mt-5">
-                    <h3 className="text-white">Trending Movies</h3><i style={{fontSize:'30px'}} className="bi bi-chevron-right  mb-2"></i>
-                  </div>
-                  <p style={{color:'#E2E2E2'}}>Movies with the highest Rate number</p>
-                  <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
-                    <div className="left-icon d-flex align-items-center">
-                      <Link
-                        to="scroll-container-year"
-                        spy={true}
-                        smooth={true}
-                        offset={-50}
-                        duration={500}
-                      >
-                        <img
-                          src={arrow}
-                          width={50}
-                          height={50}
-                          className="arrow-icon"
-                          onClick={(e) => handleScroll(e,'left', 'year')}
-                        />
-                      </Link>
-                    </div>
-                    <div className="scroll d-flex gap-3 scroll-container-year" onScroll={(e) => setScrollPositionYear(e.target.scrollLeft)}>
-                    {movies &&
-                      movies
-                        .filter((movie) => ratings && ratings.some((rating) => rating.movieId === movie.movieId))
-                        .map((movie) => (
-                          <MovieCard
-                            key={movie.movieId}
-                            movieId={movie.movieId}
-                            title={movie.title}
-                            publishedYear={movie.publishedYear}
-                            photo={movie.img}
-                          />
-                        ))}
-                    </div>
-                    <div className="right-icon d-flex align-items-center">
-                      <Link
-                        to="scroll-container-year"
-                        spy={true}
-                        smooth={true}
-                        offset={50}
-                        duration={500}
-                      >
-                        <img
-                          src={arrow}
-                          width={50}
-                          height={50}
-                          className="arrow-icon"
-                          onClick={(e) => handleScroll(e,'right', 'year')}
                         />
                       </Link>
                     </div>
