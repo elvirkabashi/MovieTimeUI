@@ -43,7 +43,7 @@ function Home() {
           setRatings(res.data)
       })
 
-  }, [searchQuery,scrollPositionRate,scrollPositionYear]);
+  }, [searchQuery,scrollPositionLastes,scrollPositionRate,scrollPositionYear]);
 
 
   const handleSearch = (e) => {
@@ -166,7 +166,8 @@ function Home() {
                     <h3 className="text-white">Trending Movies</h3><i style={{fontSize:'30px'}} className="bi bi-chevron-right  mb-2"></i>
                   </div>
                   <p style={{color:'#E2E2E2'}}>Movies with the highest Rate number</p>
-                  <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
+                  {(ratings != null) ? (
+                    <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
                     <div className="left-icon d-flex align-items-center">
                       <Link
                         to="scroll-container-rate"
@@ -216,12 +217,16 @@ function Home() {
                       </Link>
                     </div>
                   </div>
+                  ):(
+                    <p className="text-danger">No movies</p>
+                  )}
 
                   <div className="a d-flex align-items-center mt-5">
                     <h3 className="text-white">Movies by Year</h3><i style={{fontSize:'30px'}} className="bi bi-chevron-right  mb-2"></i>
                   </div>
                   <p style={{color:'#E2E2E2'}}>Movies before 2000</p>
-                  <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
+                  {movies.some((movie) => movie.publishedYear < 2000) ? (
+                    <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
                     <div className="left-icon d-flex align-items-center">
                       <Link
                         to="scroll-container-year"
@@ -271,6 +276,10 @@ function Home() {
                       </Link>
                     </div>
                   </div>
+                  ):
+                   (
+                    <p className="text-danger">No Movies</p>
+                  )} 
 
                 </div>
       ):(

@@ -77,7 +77,7 @@ function MovieCard({wlistId,movieId,title,publishedYear,photo}) {
     }}>
       {wtachListButton && 
         <button type="button" className="btn-close btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left"
-        title="Delete" aria-label="Close" style={{ position: 'absolute', top: 5, right: 5 }}
+        title="Delete" aria-label="Close" style={{color:'white', position: 'absolute', top: 5, right: 5 }}
         onClick={handleDeleteWatchlist}></button>
       }
       
