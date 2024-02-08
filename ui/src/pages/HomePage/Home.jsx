@@ -130,18 +130,17 @@ function Home() {
                       </Link>
                     </div>
                     <div className="scroll d-flex gap-3 scroll-container-lastes" onScroll={(e) => setScrollPositionLastes(e.target.scrollLeft)}>
-                    {movies &&
-                      movies
-                        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                        .map((movie) => (
-                          <MovieCard
-                            key={movie.movieId}
-                            movieId={movie.movieId}
-                            title={movie.title}
-                            publishedYear={movie.publishedYear}
-                            photo={movie.img}
-                          />
-                        ))}
+                    {movies && Array.isArray(movies) && movies
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .map((movie) => (
+                      <MovieCard
+                        key={movie.movieId}
+                        movieId={movie.movieId}
+                        title={movie.title}
+                        publishedYear={movie.publishedYear}
+                        photo={movie.img}
+                      />
+                    ))}
                     </div>
                     <div className="right-icon d-flex align-items-center">
                       <Link
@@ -186,18 +185,17 @@ function Home() {
                       </Link>
                     </div>
                     <div className="scroll d-flex gap-3 scroll-container-rate" onScroll={(e) => setScrollPositionRate(e.target.scrollLeft)}>
-                    {movies &&
-                      movies
-                        .filter((movie) => ratings && ratings.some((rating) => rating.movieId === movie.movieId))
-                        .map((movie) => (
-                          <MovieCard
-                            key={movie.movieId}
-                            movieId={movie.movieId}
-                            title={movie.title}
-                            publishedYear={movie.publishedYear}
-                            photo={movie.img}
-                          />
-                        ))}
+                    {Array.isArray(movies) && movies
+                    .filter((movie) => ratings && ratings.some((rating) => rating.movieId === movie.movieId))
+                    .map((movie) => (
+                        <MovieCard
+                          key={movie.movieId}
+                          movieId={movie.movieId}
+                          title={movie.title}
+                          publishedYear={movie.publishedYear}
+                          photo={movie.img}
+                        />
+                    ))}
                     </div>
                     <div className="right-icon d-flex align-items-center">
                       <Link
@@ -225,7 +223,7 @@ function Home() {
                     <h3 className="text-white">Movies by Year</h3><i style={{fontSize:'30px'}} className="bi bi-chevron-right  mb-2"></i>
                   </div>
                   <p style={{color:'#E2E2E2'}}>Movies before 2000</p>
-                  {movies.some((movie) => movie.publishedYear < 2000) ? (
+                  {Array.isArray(movies) && movies.some((movie) => movie.publishedYear < 2000)  ? (
                     <div className="d-flex arrow" style={{ marginLeft: '-60px', padding: '0px' }}>
                     <div className="left-icon d-flex align-items-center">
                       <Link
