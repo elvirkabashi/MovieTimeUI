@@ -10,21 +10,26 @@ function LogIn() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState();
     const [successMessage, setSuccessMessage] = useState('');
+    const [loading, setLoading] = useState(false); 
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await axios.post('http://localhost:7147/api/authentication/login', {
                 Email: email,
                 Password: password,
             });
             Cookies.set('authToken', response.data.token, { expires: 7 });
+            setLoading(false);
             window.location.href = '/';
         } catch (error) {
             if (error.response && error.response.data) {
+                setLoading(false);
                 const { errors } = error.response.data;
                 setError(errors);
             } else {
+                setLoading(false);
                 console.error('Login failed. An unexpected error occurred:', error.message);
             }
         }
@@ -57,7 +62,7 @@ function LogIn() {
                             <div className="">
                                 <label className="form-label text-white">Email</label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     className="form-control"
                                     placeholder='Enter your email' required
                                     value={email}
@@ -79,9 +84,10 @@ function LogIn() {
                                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                                 <label className="form-check-label text-white">Remember me</label>
                             </div>
-                            <button type="submit" className="btn custom-btn-outline-primary">
-                                LogIn
-                            </button>
+                            {!loading && <button type="submit" className="btn custom-btn-outline-primary">LogIn</button>}
+                            {loading && <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>}
                         </form>
                     </div>
 

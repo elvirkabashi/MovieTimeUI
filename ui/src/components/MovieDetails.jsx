@@ -200,10 +200,17 @@ function MovieDetails() {
             <img src={noimg} alt="" style={{maxWidth:'220px',height:'250px',borderRadius:'10px'}} />
           </div>
           <div style={{width:'100%'}}>
-            <button style={{width:'100%',border:'none'}} onClick={openTrailerModal} className='btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <i style={{fontSize:'25px'}} className="bi bi-play-circle text-warning px-2"></i>
-              PLAY TRAILER
+            {movie.trilerURL == null ? (
+              <button style={{width:'100%',border:'none'}} className='btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i style={{fontSize:'25px'}} className="bi bi-play-circle text-warning px-2"></i>
+                No Triler
               </button>
+            ):(
+              <button style={{width:'100%',border:'none'}} onClick={openTrailerModal} className='btn' data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i style={{fontSize:'25px'}} className="bi bi-play-circle text-warning px-2"></i>
+                PLAY TRAILER
+              </button>
+            )}
           </div>
         </div>
 

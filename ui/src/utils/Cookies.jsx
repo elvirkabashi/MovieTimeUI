@@ -25,10 +25,10 @@ export const getUserInfo = async () => {
   } catch (error) {
     console.error('Error getting user info:', error);
 
-    // Check if the error is due to unauthorized access 
+
     if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
       console.error('Unauthorized access. Deleting auth token cookie.');
-      // Delete the auth token cookie
+
       Cookies.remove('authToken');
       window.location.href = '/';
 
